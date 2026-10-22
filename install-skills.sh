@@ -26,6 +26,7 @@ if [ -d /root/.ccr ] && [ ! -e "$real.real" ]; then
   printf '#!/usr/bin/env bash\nca=$(python3 -c "import certifi;print(certifi.where())")\nREQUESTS_CA_BUNDLE=$ca SSL_CERT_FILE=$ca exec "%s.real" "$@"\n' "$real" > "$real"
   chmod +x "$real"
 fi
-if command -v claude >/dev/null; then
+# Di sesi cloud Composio sudah tersedia lewat konektor claude.ai, jadi hanya ditambahkan di komputer sendiri.
+if command -v claude >/dev/null && [ ! -d /root/.ccr ]; then
   claude mcp get composio >/dev/null 2>&1 || claude mcp add --scope user --transport http composio https://connect.composio.dev/mcp
 fi
