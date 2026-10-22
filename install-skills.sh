@@ -18,7 +18,11 @@ while IFS= read -r f; do
 done < <(find "$BASE/andrej-karpathy-skills/skills" "$BASE/rea/.agents/skills" "$BASE/awesome-claude-skills" \
            -name SKILL.md -not -path '*/.git/*')
 echo "Terpasang $n skill ke $DEST"
-pip install -q langsmith-fetch && echo "langsmith-fetch terpasang"
+if command -v pip >/dev/null; then
+  pip install -q langsmith-fetch && echo "langsmith-fetch terpasang"
+else
+  echo "pip tidak ditemukan: langsmith-fetch dilewati (pasang Python dulu kalau butuh)"
+fi
 # Sesi cloud: bundle CA proxy tidak memuat rantai sertifikat LangSmith, jadi langsmith-fetch memakai bundle certifi.
 real=$(command -v langsmith-fetch)
 if [ -d /root/.ccr ] && [ ! -e "$real.real" ]; then
